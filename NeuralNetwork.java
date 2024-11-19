@@ -19,5 +19,8 @@ public class NeuralNetwork {
         }
         return outputs;
     }
+    public void learn(float[] a) {
+
+    }
 
 }

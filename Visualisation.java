@@ -8,17 +8,13 @@ import javafx.scene.shape.ArcType;
 import javafx.stage.Stage;
 
 public class Visualisation extends Application {
-    private NeuralNetwork network;
-
-    public Visualisation() {
-        // Initialize the neural network
-        int[] neuronsPerLayer = {6, 12, 13,3};
-        String activationFunction = "sigmoid";
-        this.network = new NeuralNetwork(neuronsPerLayer, activationFunction);
-    }
+    private static NeuralNetwork network;
 
     @Override
     public void start(Stage primaryStage) {
+        if (network == null) {
+            throw new IllegalStateException("Neural Network is not defined");
+        }
         // Set up the canvas for drawing
         Canvas canvas = new Canvas(800, 600); // Set canvas size
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -93,8 +89,8 @@ public class Visualisation extends Application {
         }
     }
 
-    public static void visualize() {
-        Visualisation visualisation = new Visualisation();
+    public static void visualize(NeuralNetwork n) {
+        network = n;
         launch();  // Launch the JavaFX application
     }
 }

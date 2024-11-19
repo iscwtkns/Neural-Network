@@ -13,6 +13,7 @@ public class Neuron {
     public Neuron(float[] weights) {
         bias = 0;
         this.weights = weights;
+        this.activationFunction = "identity";
     }
     public float output(float[] inputs) {
         return ActivationFunction(MathUtils.dotProduct(weights, inputs) + bias);
