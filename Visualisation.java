@@ -47,7 +47,10 @@ public class Visualisation extends Application {
                 float bias = network.layers[layerIndex].neurons[neuronIndex].bias;
 
                 // Calculate fill ratio based on the bias
-                double fillRatio = (bias + 1) / 2; // Convert bias to a value between 0 (no fill) and 1 (full fill)
+                float roundedBiasTerm = 0;
+                roundedBiasTerm = (float) Math.min(1,bias);
+                roundedBiasTerm = (float) Math.max(0,bias);
+                double fillRatio = (roundedBiasTerm + 1) / 2; // Convert bias to a value between 0 (no fill) and 1 (full fill)
 
                 // Set fill color based on fill ratio
                 gc.setFill(new Color(0, fillRatio, 0, 1)); // Green fill with varying opacity
@@ -74,7 +77,7 @@ public class Visualisation extends Application {
                     float weight = network.layers[layerIndex + 1].neurons[nextNeuronIndex].weights[currentNeuronIndex];
 
                     // Set line opacity based on weight (normalized between 0 and 1)
-                    double opacity = Math.abs(weight); // Absolute value of weight for opacity
+                    double opacity = Math.min(Math.abs(weight),1); // Absolute value of weight for opacity
                     gc.setStroke(new Color(0, 0, 0, opacity)); // Black line with opacity
 
                     // Draw line from current neuron to next neuron

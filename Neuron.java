@@ -1,9 +1,14 @@
 public class Neuron {
     public float[] weights;
     public float bias;
-    private String activationFunction;
+    public float errorTerm;
+    public String activationFunction;
+    public float output;
+    public float biasDerivative;
+    public float[] weightDerivatives;
     public Neuron(int nInputs, String activationFunction) {
         weights = new float[nInputs];
+        weightDerivatives = new float[nInputs];
         bias = (float) (-1 + 2*Math.random());
         for (int i = 0; i < nInputs; i++) {
             weights[i] = (float) Math.random();
@@ -16,16 +21,25 @@ public class Neuron {
         this.activationFunction = "identity";
     }
     public float output(float[] inputs) {
-        return ActivationFunction(MathUtils.dotProduct(weights, inputs) + bias);
+        this.output = ActivationFunction(MathUtils.dotProduct(weights, inputs) + bias);
+        return this.output;
     }
     private float ActivationFunction(float n) {
         switch (activationFunction) {
-            case "sigmoid":
+            case "sigmoid" -> {
                 return MathUtils.sigmoid(n);
-            case "identity":
+            }
+            case "identity" -> {
                 return n;
-            default:
-                throw new IllegalArgumentException("Unknown activation function: " + activationFunction);
+            }
+            case "relu" -> {
+                if (n > 0) {
+                    return n;
+                } else {
+                    return 0;
+                }
+            }
+            default -> throw new IllegalArgumentException("Unknown activation function: " + activationFunction);
         }
     }
 }

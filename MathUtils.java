@@ -12,4 +12,11 @@ public class MathUtils {
     public static float sigmoid(float a) {
         return (float) (1/(1+Math.exp(-a)));
     }
+    public static float MSE(float[] model, float[] actual) {
+        float error = 0;
+        for (int i = 0; i < model.length; i++) {
+            error += Math.pow(model[i]-actual[i],2);
+        }
+        return error/model.length;
+    }
 }

@@ -4,54 +4,74 @@ public class DataManipulation {
 
     public DataManipulation() {}
     public float[][] scaleData(float[] xData, float[] yData) {
-        float minimum = xData[0];
-        float maximum = xData[0];
-        for (int i = 0; i < xData.length; i++) {
-            if (xData[i] < minimum) {
-                minimum = xData[i];
+        float[] newX = java.util.Arrays.copyOf(xData, xData.length);
+        float[] newY = java.util.Arrays.copyOf(yData, yData.length);
+        float minimum = newX[0];
+        float maximum = newY[0];
+        for (float x : newX) {
+            if (x < minimum) {
+                minimum = x;
             }
-            if (xData[i] > maximum) {
-                maximum = xData[i];
+            if (x > maximum) {
+                maximum = x;
             }
         }
-        for (int i = 0; i < yData.length; i++) {
-            if (yData[i] < minimum) {
-                minimum = yData[i];
+        for (float v : newY) {
+            if (v < minimum) {
+                minimum = v;
             }
-            if (yData[i] > maximum) {
-                maximum = yData[i];
+            if (v > maximum) {
+                maximum = v;
             }
         }
         if (minimum < 0) {
             positiveAdjustment = -minimum;
-            for (int i = 0; i < xData.length; i++) {
-                xData[i] += positiveAdjustment;
+            for (int i = 0; i < newX.length; i++) {
+                newX[i] += positiveAdjustment;
             }
-            for (int i = 0; i < yData.length; i++) {
-                yData[i] += positiveAdjustment;
+            for (int i = 0; i < newY.length; i++) {
+                newY[i] += positiveAdjustment;
             }
         }
         else {
             positiveAdjustment = 0;
         }
         scaleFactor = maximum + positiveAdjustment;
-        for (int i = 0; i < xData.length; i++) {
-            xData[i] = xData[i] / scaleFactor;
+        for (int i = 0; i < newX.length; i++) {
+            newX[i] = newX[i] / scaleFactor;
         }
-        for (int i = 0; i < yData.length; i++) {
-            yData[i] = yData[i] / scaleFactor;
+        for (int i = 0; i < newY.length; i++) {
+            newY[i] = newY[i] / scaleFactor;
         }
-        return new float[][] {xData,yData};
+        return new float[][] {newX, newY};
     }
     public float[][] invertScaling(float[] xData, float[] yData) {
-        for (int i = 0; i < xData.length; i++) {
-            xData[i] = xData[i] * scaleFactor;
-            xData[i] -= positiveAdjustment;
+        float[] newX = java.util.Arrays.copyOf(xData,xData.length);
+        float[] newY = java.util.Arrays.copyOf(yData,yData.length);
+        for (int i = 0; i < newX.length; i++) {
+            newX[i] = newX[i] * scaleFactor;
+            newX[i] -= positiveAdjustment;
         }
-        for (int i = 0; i < yData.length; i++) {
-            yData[i] = yData[i] * scaleFactor;
-            yData[i] -= positiveAdjustment;
+        for (int i = 0; i < newY.length; i++) {
+            newY[i] = newY[i] * scaleFactor;
+            newY[i] -= positiveAdjustment;
         }
-        return new float[][] {xData, yData};
+        return new float[][] {newX, newY};
+    }
+    public float[] scale(float[] data) {
+        float[] newData = java.util.Arrays.copyOf(data,data.length);
+        for (int i = 0; i <data.length; i++) {
+            newData[i] += positiveAdjustment;
+            newData[i] = newData[i] / scaleFactor;
+        }
+        return newData;
+    }
+    public float[] invertScalingSingular(float[] data) {
+        float[] newData = java.util.Arrays.copyOf(data, data.length);
+        for (int i = 0; i < data.length; i++) {
+            newData[i] = newData[i] * scaleFactor;
+            newData[i] -= positiveAdjustment;
+        }
+        return newData;
     }
 }
